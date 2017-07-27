@@ -1,11 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-
-var HomePage = function() {
-  return (
-    <h1>HELLO</h1>
-  );
-}
+import HomePage from './components/HomePage';
 
 ReactDOM.render(
   <HomePage />,
