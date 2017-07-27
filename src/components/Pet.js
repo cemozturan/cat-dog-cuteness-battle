@@ -15,6 +15,19 @@ var compStyle = {
 };
 
 class Pet extends Component {
+  constructor(props) {
+    super(props);
+    /*
+      Unless you use the ES6 arrow functions, this is the best practice to make sure the
+      "this" keyword inside the class functions refer to the component instance.
+      When we do the binding here in the constructor, they get bound only once.
+      If we bind inside the onClick HTML attribute, then the binding will happen again and again
+      every time the component is rendered.
+    */
+    this.handleLikeButtonClick = this.handleLikeButtonClick.bind(this);
+    this.handleDislikeButtonClick = this.handleDislikeButtonClick.bind(this);
+  }
+
   handleLikeButtonClick() {
     console.log(this.props.name, 'Liked');
   }
@@ -29,7 +42,7 @@ class Pet extends Component {
         <h3>{this.props.name} component</h3>
         <img
           src={this.props.imageUrl}
-          alt={this.props.imageText}
+          alt={`Cute ${this.props.name}`}
           style={{height: 400, width: 400}}/>
         <br />
         <button style={buttonStyle} onClick={this.handleLikeButtonClick}>Like</button>
