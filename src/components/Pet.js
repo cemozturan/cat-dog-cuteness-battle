@@ -17,6 +17,9 @@ var compStyle = {
 class Pet extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      likesCount: 0
+    };
     /*
       Unless you use the ES6 arrow functions, this is the best practice to make sure the
       "this" keyword inside the class functions refer to the component instance.
@@ -29,17 +32,17 @@ class Pet extends Component {
   }
 
   handleLikeButtonClick() {
-    console.log(this.props.name, 'Liked');
+    this.setState({likesCount: this.state.likesCount+1});
   }
 
   handleDislikeButtonClick() {
-    console.log(this.props.name, 'Disliked');
+    this.setState({likesCount: this.state.likesCount-1});
   }
 
   render() {
     return (
       <div style={compStyle}>
-        <h3>{this.props.name} component</h3>
+        <h3>{this.props.name} Likes: {this.state.likesCount}</h3>
         <img
           src={this.props.imageUrl}
           alt={`Cute ${this.props.name}`}
