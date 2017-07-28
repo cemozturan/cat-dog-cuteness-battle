@@ -39,14 +39,12 @@ class HomePage extends Component {
     if (petName === 'Cat') {
       this.setState(function(prevState) {
         return {
-          catLikes: prevState.catLikes + 1,
-          dogLikes: prevState.dogLikes
+          catLikes: prevState.catLikes + 1
         }
       });
     } else {
       this.setState(function(prevState) {
         return {
-          catLikes: prevState.catLikes,
           dogLikes: prevState.dogLikes + 1
         }
       });
@@ -59,14 +57,12 @@ class HomePage extends Component {
     if (petName === 'Cat') {
       this.setState(function(prevState) {
         return {
-          catLikes: prevState.catLikes - 1,
-          dogLikes: prevState.dogLikes
+          catLikes: prevState.catLikes - 1
         }
       });
     } else {
       this.setState(function(prevState) {
         return {
-          catLikes: prevState.catLikes,
           dogLikes: prevState.dogLikes - 1
         }
       });
@@ -91,6 +87,7 @@ class HomePage extends Component {
   }
 
   render () {
+    console.log(this.state);
     return (
       <div>
         <h1 style={style}>Welcome to Cat vs Dog Cuteness Battle</h1>
