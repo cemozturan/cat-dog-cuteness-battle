@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 var buttonStyle = {
   height: '25px',
@@ -14,25 +14,19 @@ var compStyle = {
   marginRight: 'auto'
 };
 
-class Pet extends Component {
-  constructor(props) {
-    super(props);
-  }
-
-  render() {
-    return (
-      <div style={compStyle}>
-        <h3>{this.props.name} Likes: {this.props.likesCount}</h3>
-        <img
-          src={this.props.imageUrl}
-          alt={`Cute ${this.props.name}`}
-          style={{height: 400, width: 400}}/>
-        <br />
-        <button style={buttonStyle} value={this.props.name} onClick={this.props.onLikeButtonClick}>Like</button>
-        <button style={buttonStyle} value={this.props.name} onClick={this.props.onDislikeButtonClick}>Dislike</button>
-        </div>
-    );
-  }
+var Pet = function(props) {
+  return (
+    <div style={compStyle}>
+      <h3>{props.name} Likes: {props.likesCount}</h3>
+      <img
+        src={props.imageUrl}
+        alt={`Cute ${props.name}`}
+        style={{height: 400, width: 400}}/>
+      <br />
+      <button style={buttonStyle} value={props.name} onClick={props.onLikeButtonClick}>Like</button>
+      <button style={buttonStyle} value={props.name} onClick={props.onDislikeButtonClick}>Dislike</button>
+    </div>
+  );
 }
 
 export default Pet;
