@@ -1,4 +1,5 @@
 import React from 'react';
+import constants from '../constants';
 
 var buttonStyle = {
   height: '25px',
@@ -14,12 +15,15 @@ var compStyle = {
   marginRight: 'auto'
 };
 
+var LOSER = constants.LOSER;
+var CUTE = constants.CUTE;
+
 var Pet = function(props) {
   var result = null;
   var disabled = false;
   if (props.result !== '') {
     var resultStyle = {};
-    if (props.result === 'Loser') {
+    if (props.result === LOSER) {
         resultStyle = { color: 'red' };
     } else {
         resultStyle = { color: 'green' };
@@ -40,7 +44,7 @@ var Pet = function(props) {
     }
       <img
         src={props.imageUrl}
-        alt={`Cute ${props.name}`}
+        alt={CUTE + ' ' + props.name}
         style={{height: 300, width: 300}}/>
       <br />
       <button style={buttonStyle} disabled={disabled} value={props.name} onClick={props.onLikeButtonClick}>Like</button>
