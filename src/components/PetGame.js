@@ -17,9 +17,11 @@ class PetGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cat: {likes: 0, result: '', imageUrl: ''},
-      dog:  {likes: 0, result: '', imageUrl: ''}
+      cat: {result: '', imageUrl: ''},
+      dog:  {result: '', imageUrl: ''}
     }
+    this.catLikes = 0;
+    this.dogLikes = 0;
     /*
       Unless you use the ES6 arrow functions, this is the best practice to make sure the
       "this" keyword inside the class functions refer to the component instance.
@@ -43,7 +45,7 @@ class PetGame extends Component {
         var imageUrl = response.data.imageUrl;
         this.setState(function(prevState) {
           return {
-            cat: {likes: prevState.cat.likes, result: prevState.cat.result, imageUrl: imageUrl}
+            cat: {result: prevState.cat.result, imageUrl: imageUrl}
           };
         });
       }.bind(this));
@@ -55,7 +57,7 @@ class PetGame extends Component {
         var imageUrl = response.data.imageUrl;
         this.setState(function(prevState) {
           return {
-            dog: {likes: prevState.dog.likes, result: prevState.dog.result, imageUrl: imageUrl}
+            dog: {result: prevState.dog.result, imageUrl: imageUrl}
           };
         });
       }.bind(this));
@@ -70,17 +72,9 @@ class PetGame extends Component {
     var petName = event.target.value;
 
     if (petName === 'Cat') {
-      this.setState(function(prevState) {
-        return {
-          cat: {likes: prevState.cat.likes + 1, result: prevState.cat.result, imageUrl: prevState.cat.imageUrl}
-        }
-      });
+      this.catLikes += 1;
     } else {
-      this.setState(function(prevState) {
-        return {
-          dog: {likes: prevState.dog.likes + 1, result: prevState.dog.result, imageUrl: prevState.dog.imageUrl}
-        }
-      });
+      this.dogLikes += 1;
     }
     this.fetchImages();
   }
@@ -89,24 +83,16 @@ class PetGame extends Component {
     var petName = event.target.value;
 
     if (petName === 'Cat') {
-      this.setState(function(prevState) {
-        return {
-          cat: {likes: prevState.cat.likes - 1, result: prevState.cat.result, imageUrl: prevState.cat.imageUrl}
-        }
-      });
+      this.catLikes -= 1;
     } else {
-      this.setState(function(prevState) {
-        return {
-          dog: {likes: prevState.dog.likes - 1, result: prevState.dog.result, imageUrl: prevState.dog.imageUrl}
-        }
-      });
+      this.dogLikes -= 1;
     }
     this.fetchImages();
   }
 
   handleShowWinnerButtonClick() {
-    var catLikesCount = this.state.cat.likes;
-    var dogLikesCount = this.state.dog.likes;
+    var catLikesCount = this.catLikes;
+    var dogLikesCount = this.dogLikes;
     var catResult = 'TIE';
     var dogResult = 'TIE';
 
@@ -120,17 +106,19 @@ class PetGame extends Component {
 
     this.setState(function(prevState) {
         return {
-          cat: {likes: prevState.cat.likes, result: catResult, imageUrl: prevState.cat.imageUrl},
-          dog: {likes: prevState.dog.likes, result: dogResult, imageUrl: prevState.dog.imageUrl}
+          cat: {result: catResult, imageUrl: prevState.cat.imageUrl},
+          dog: {result: dogResult, imageUrl: prevState.dog.imageUrl}
         }
     });
   }
 
   handleStartOverButtonClick() {
       this.setState({
-            cat: {likes: 0, result: '', imageUrl: ''},
-            dog: {likes: 0, result: '', imageUrl: ''}
+            cat: {result: '', imageUrl: ''},
+            dog: {result: '', imageUrl: ''}
           });
+      this.catLikes = 0;
+      this.dogLikes = 0;
       this.fetchImages();
   }
 
@@ -142,7 +130,7 @@ class PetGame extends Component {
             imageUrl={this.state.cat.imageUrl}
             name="Cat"
             result={this.state.cat.result}
-            likesCount={this.state.cat.likes}
+            likesCount={this.catLikes}
             onLikeButtonClick={this.handleLikeButtonClick}
             onDislikeButtonClick={this.handleDislikeButtonClick}
           />
@@ -151,7 +139,7 @@ class PetGame extends Component {
             imageUrl={this.state.dog.imageUrl}
             name="Dog"
             result={this.state.dog.result}
-            likesCount={this.state.dog.likes}
+            likesCount={this.dogLikes}
             onLikeButtonClick={this.handleLikeButtonClick}
             onDislikeButtonClick={this.handleDislikeButtonClick}
           />
