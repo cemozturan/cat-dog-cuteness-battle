@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import PetGame from './components/PetGame';
+import HomePage from './components/HomePage';
 
 ReactDOM.render(
-  <PetGame />,
+  <HomePage />,
   document.getElementById('root'));

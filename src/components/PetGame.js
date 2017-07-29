@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Pet from './Pet';
-import Header from './Header';
 import axios from 'axios';
 
 var buttonStyle = {
@@ -138,7 +137,6 @@ class PetGame extends Component {
   render () {
     return (
       <div>
-      <Header />
         <div style={{marginTop: 60, textAlign: 'center'}}>
           <Pet
             imageUrl={this.state.cat.imageUrl}
