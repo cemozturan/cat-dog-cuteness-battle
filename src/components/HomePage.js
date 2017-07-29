@@ -17,8 +17,8 @@ class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      catLikes: 0,
-      dogLikes: 0
+      cat: {likes: 0, result: ''},
+      dog:  {likes: 0, result: ''}
     }
     /*
       Unless you use the ES6 arrow functions, this is the best practice to make sure the
@@ -39,13 +39,13 @@ class HomePage extends Component {
     if (petName === 'Cat') {
       this.setState(function(prevState) {
         return {
-          catLikes: prevState.catLikes + 1
+          cat: {likes: prevState.cat.likes + 1, result: prevState.cat.result}
         }
       });
     } else {
       this.setState(function(prevState) {
         return {
-          dogLikes: prevState.dogLikes + 1
+          dog: {likes: prevState.dog.likes + 1, result: prevState.dog.result}
         }
       });
     }
@@ -57,33 +57,46 @@ class HomePage extends Component {
     if (petName === 'Cat') {
       this.setState(function(prevState) {
         return {
-          catLikes: prevState.catLikes - 1
+          cat: {likes: prevState.cat.likes - 1, result: prevState.cat.result}
         }
       });
     } else {
       this.setState(function(prevState) {
         return {
-          dogLikes: prevState.dogLikes - 1
+          dog: {likes: prevState.dog.likes - 1, result: prevState.dog.result}
         }
       });
     }
   }
 
   handleShowWinnerButtonClick() {
-    var catLikesCount = this.state.catLikes;
-    var dogLikesCount = this.state.dogLikes;
+    var catLikesCount = this.state.cat.likes;
+    var dogLikesCount = this.state.dog.likes;
+    var catResult = 'TIE';
+    var dogResult = 'TIE';
 
     if (catLikesCount > dogLikesCount) {
-      console.log('Cat is the Winner');
+      catResult = 'Winner';
+      dogResult = 'Loser';
     } else if (catLikesCount < dogLikesCount) {
-      console.log('Dog is the Winner');
-    } else {
-      console.log('Game is a TIE');
+      dogResult = 'Winner';
+      catResult = 'Loser';
     }
+
+    this.setState(function(prevState) {
+        return {
+          cat: {likes: prevState.cat.likes, result: catResult},
+          dog: {likes: prevState.dog.likes, result: dogResult}
+        }
+    });
+
   }
 
   handleStartOverButtonClick() {
-
+      this.setState({
+            cat: {likes: 0, result: ''},
+            dog: {likes: 0, result: ''}
+          });
   }
 
   render () {
@@ -95,7 +108,8 @@ class HomePage extends Component {
           <Pet
             imageUrl="http://www.cutestpaw.com/wp-content/uploads/2011/11/HALP.jpeg"
             name="Cat"
-            likesCount={this.state.catLikes}
+            result={this.state.cat.result}
+            likesCount={this.state.cat.likes}
             onLikeButtonClick={this.handleLikeButtonClick}
             onDislikeButtonClick={this.handleDislikeButtonClick}
           />
@@ -103,13 +117,17 @@ class HomePage extends Component {
           <Pet
             imageUrl="https://s-media-cache-ak0.pinimg.com/736x/82/b5/42/82b542ced27fcefc0935373e7c7db113--dachshund-puppies-wiener-dogs.jpg"
             name="Dog"
-            likesCount={this.state.dogLikes}
+            result={this.state.dog.result}
+            likesCount={this.state.dog.likes}
             onLikeButtonClick={this.handleLikeButtonClick}
             onDislikeButtonClick={this.handleDislikeButtonClick}
           />
         </div>
         <div style={{textAlign: 'center'}}>
-          <button style={buttonStyle} onClick={this.handleShowWinnerButtonClick}>Show Winner</button>
+            {
+                !this.state.cat.result &&
+                <button style={buttonStyle} onClick={this.handleShowWinnerButtonClick}>Show Winner</button>
+            }
           <button style={buttonStyle} onClick={this.handleStartOverButtonClick}>Start Over</button>
         </div>
       </div>

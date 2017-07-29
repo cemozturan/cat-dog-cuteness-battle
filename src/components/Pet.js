@@ -15,16 +15,36 @@ var compStyle = {
 };
 
 var Pet = function(props) {
+  var result = null;
+  var disabled = false;
+  if (props.result !== '') {
+    var resultStyle = {};
+    if (props.result === 'Loser') {
+        resultStyle = { color: 'red' };
+    } else {
+        resultStyle = { color: 'green' };
+    }
+    result = <h1 style={resultStyle}>{props.result}</h1>;
+    disabled = true;
+  }
+
   return (
     <div style={compStyle}>
-      <h3>{props.name} Likes: {props.likesCount}</h3>
+    {result}
+    {
+        (props.result) ? (
+            <h3>{props.name} Likes: {props.likesCount}</h3>
+        )  : (
+            <h3>{props.name}</h3>
+        )
+    }
       <img
         src={props.imageUrl}
         alt={`Cute ${props.name}`}
-        style={{height: 400, width: 400}}/>
+        style={{height: 300, width: 300}}/>
       <br />
-      <button style={buttonStyle} value={props.name} onClick={props.onLikeButtonClick}>Like</button>
-      <button style={buttonStyle} value={props.name} onClick={props.onDislikeButtonClick}>Dislike</button>
+      <button style={buttonStyle} disabled={disabled} value={props.name} onClick={props.onLikeButtonClick}>Like</button>
+      <button style={buttonStyle} disabled={disabled} value={props.name} onClick={props.onDislikeButtonClick}>Dislike</button>
     </div>
   );
 }
