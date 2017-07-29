@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PetGame from './PetGame';
 import Header from './Header';
 
