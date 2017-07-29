@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Pet from './Pet';
+import axios from 'axios';
 
 var style = {
   textAlign: 'center',
@@ -13,12 +14,17 @@ var buttonStyle = {
   marginRight: '5px'
 };
 
+var API_KEY = "123456789";
+
+var CAT_URL = "http://localhost:63000/cat/?api_key=" + API_KEY;
+var DOG_URL = "http://localhost:63000/dog/?api_key=" + API_KEY;
+
 class HomePage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      cat: {likes: 0, result: ''},
-      dog:  {likes: 0, result: ''}
+      cat: {likes: 0, result: '', imageUrl: ''},
+      dog:  {likes: 0, result: '', imageUrl: ''}
     }
     /*
       Unless you use the ES6 arrow functions, this is the best practice to make sure the
@@ -33,22 +39,56 @@ class HomePage extends Component {
     this.handleStartOverButtonClick = this.handleStartOverButtonClick.bind(this);
   }
 
+  componentDidMount(){
+    this.fetchImages();
+  }
+
+  fetchCatImage() {
+    axios.get(CAT_URL)
+      .then(function(response) {
+        var imageUrl = response.data.imageUrl;
+        this.setState(function(prevState) {
+          return {
+            cat: {likes: prevState.cat.likes, result: prevState.cat.result, imageUrl: imageUrl}
+          };
+        });
+      }.bind(this));
+  }
+
+  fetchDogImage() {
+    axios.get(DOG_URL)
+      .then(function(response) {
+        var imageUrl = response.data.imageUrl;
+        this.setState(function(prevState) {
+          return {
+            dog: {likes: prevState.dog.likes, result: prevState.dog.result, imageUrl: imageUrl}
+          };
+        });
+      }.bind(this));
+  }
+
+  fetchImages() {
+      this.fetchCatImage();
+      this.fetchDogImage();
+  }
+
   handleLikeButtonClick(event) {
     var petName = event.target.value;
 
     if (petName === 'Cat') {
       this.setState(function(prevState) {
         return {
-          cat: {likes: prevState.cat.likes + 1, result: prevState.cat.result}
+          cat: {likes: prevState.cat.likes + 1, result: prevState.cat.result, imageUrl: prevState.cat.imageUrl}
         }
       });
     } else {
       this.setState(function(prevState) {
         return {
-          dog: {likes: prevState.dog.likes + 1, result: prevState.dog.result}
+          dog: {likes: prevState.dog.likes + 1, result: prevState.dog.result, imageUrl: prevState.dog.imageUrl}
         }
       });
     }
+    this.fetchImages();
   }
 
   handleDislikeButtonClick(event) {
@@ -57,16 +97,17 @@ class HomePage extends Component {
     if (petName === 'Cat') {
       this.setState(function(prevState) {
         return {
-          cat: {likes: prevState.cat.likes - 1, result: prevState.cat.result}
+          cat: {likes: prevState.cat.likes - 1, result: prevState.cat.result, imageUrl: prevState.cat.imageUrl}
         }
       });
     } else {
       this.setState(function(prevState) {
         return {
-          dog: {likes: prevState.dog.likes - 1, result: prevState.dog.result}
+          dog: {likes: prevState.dog.likes - 1, result: prevState.dog.result, imageUrl: prevState.dog.imageUrl}
         }
       });
     }
+    this.fetchImages();
   }
 
   handleShowWinnerButtonClick() {
@@ -85,28 +126,27 @@ class HomePage extends Component {
 
     this.setState(function(prevState) {
         return {
-          cat: {likes: prevState.cat.likes, result: catResult},
-          dog: {likes: prevState.dog.likes, result: dogResult}
+          cat: {likes: prevState.cat.likes, result: catResult, imageUrl: prevState.cat.imageUrl},
+          dog: {likes: prevState.dog.likes, result: dogResult, imageUrl: prevState.dog.imageUrl}
         }
     });
-
   }
 
   handleStartOverButtonClick() {
       this.setState({
-            cat: {likes: 0, result: ''},
-            dog: {likes: 0, result: ''}
+            cat: {likes: 0, result: '', imageUrl: ''},
+            dog: {likes: 0, result: '', imageUrl: ''}
           });
+      this.fetchImages();
   }
 
   render () {
-    console.log(this.state);
     return (
       <div>
         <h1 style={style}>Welcome to Cat vs Dog Cuteness Battle</h1>
         <div style={{marginTop: 60, textAlign: 'center'}}>
           <Pet
-            imageUrl="http://www.cutestpaw.com/wp-content/uploads/2011/11/HALP.jpeg"
+            imageUrl={this.state.cat.imageUrl}
             name="Cat"
             result={this.state.cat.result}
             likesCount={this.state.cat.likes}
@@ -115,7 +155,7 @@ class HomePage extends Component {
           />
           {' '}
           <Pet
-            imageUrl="https://s-media-cache-ak0.pinimg.com/736x/82/b5/42/82b542ced27fcefc0935373e7c7db113--dachshund-puppies-wiener-dogs.jpg"
+            imageUrl={this.state.dog.imageUrl}
             name="Dog"
             result={this.state.dog.result}
             likesCount={this.state.dog.likes}
