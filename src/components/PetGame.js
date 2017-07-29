@@ -1,12 +1,7 @@
 import React, { Component } from 'react';
 import Pet from './Pet';
+import Header from './Header';
 import axios from 'axios';
-
-var style = {
-  textAlign: 'center',
-  fontSize: '2em',
-  color: 'rebeccapurple'
-};
 
 var buttonStyle = {
   height: '25px',
@@ -19,7 +14,7 @@ var API_KEY = "123456789";
 var CAT_URL = "http://localhost:63000/cat/?api_key=" + API_KEY;
 var DOG_URL = "http://localhost:63000/dog/?api_key=" + API_KEY;
 
-class HomePage extends Component {
+class PetGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -143,7 +138,7 @@ class HomePage extends Component {
   render () {
     return (
       <div>
-        <h1 style={style}>Welcome to Cat vs Dog Cuteness Battle</h1>
+      <Header />
         <div style={{marginTop: 60, textAlign: 'center'}}>
           <Pet
             imageUrl={this.state.cat.imageUrl}
@@ -175,4 +170,4 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
+export default PetGame;
